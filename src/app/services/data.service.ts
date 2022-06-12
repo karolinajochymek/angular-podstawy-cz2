@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Item } from '../models/item';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+  private dataUrl ='https://localhost:5001/api/items'
 
   private _items: Item[] = [{
       no: 1,
@@ -32,5 +35,13 @@ export class DataService {
     return this._items;
   }
 
-  constructor() { }
+  getProducts(): Observable<Item[]> {
+    return this.http.get(this.dataUrl) as Observable<Item[]>;
+  }
+
+  getProductDetails(id: number | null): Observable<Item> {
+      return this.http.get(`${this.dataUrl}/${id}`) as Observable<Item>;
+  }
+
+  constructor(private http: HttpClient) { }
 }

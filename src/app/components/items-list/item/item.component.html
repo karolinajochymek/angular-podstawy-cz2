@@ -4,6 +4,6 @@
         <div class="col">{{item.name}}</div>
         <div class="col">{{item.price | currency:'USD':'symbol'}}</div>
         <div class="col">{{item.quantity}}</div>
-        <a class="col blue" (click)="onClick()">Click here</a>
+        <a class="col blue" [routerLink]="['/items', item.no]">Details</a>
     </div>
 </ng-container>

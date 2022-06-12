@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { Item } from '../../models/item';
 
@@ -10,6 +11,7 @@ import { Item } from '../../models/item';
 export class ItemsListComponent implements OnInit {
 
   items: Item[] = [];
+  items$: Subscription = new Subscription();
 
   filter: string = '';
 
@@ -20,7 +22,13 @@ export class ItemsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.items = this.registeredService.items;
+    this.items$ = this.registeredService.getProducts().subscribe(data => {
+      this.items = data
+      console.log('event next')
+    },
+    error => console.log('event error'),
+    () => console.log('event complete')
+    );
   }
 
   onClickedItem(no: number) {
@@ -31,6 +39,10 @@ export class ItemsListComponent implements OnInit {
         item.isClicked = true;
       }
     })
+  }
+  
+  ngOnDestroy(): void {
+    this.items$.unsubscribe();
   }
 
 }
