@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Item } from '../models/item';
+import { DataService } from 'src/app/services/data.service';
+import { Item } from '../../models/item';
 
 @Component({
   selector: 'app-items-list',
@@ -8,37 +9,18 @@ import { Item } from '../models/item';
 })
 export class ItemsListComponent implements OnInit {
 
-  items: Item[] = [{
-    no: 1,
-    name: 'One',
-    quantity: 2,
-    price: 25.34,
-    isClicked: false
-  }, {
-    no: 2,
-    name: 'Two',
-    quantity: 4,
-    price: 26.00,
-    isClicked: false
-  }, {
-    no: 3,
-    name: 'Three',
-    quantity: 6,
-    price: 5.12,
-    isClicked: false
-  },
-    {}
-  ];
+  items: Item[] = [];
 
   filter: string = '';
 
-  constructor() { }
+  constructor(private registeredService: DataService) { }
 
   get filteredItems(): Item[] {
     return this.items.filter(x => x.name?.toLocaleLowerCase()?.includes(this.filter.toLocaleLowerCase()))
   }
 
   ngOnInit(): void {
+    this.items = this.registeredService.items;
   }
 
   onClickedItem(no: number) {
